@@ -11,3 +11,40 @@ define('DB_HOST', 'localhost');
 define('DB_NAME', 'project');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
+
+//helpers
+
+function protocol()
+{
+    return stripos($_SERVER['SERVER_PROTOCOL'], 'https') === true ? 'https://' : 'http://';
+}
+
+function currentDomain()
+{
+
+    $domain = $_SERVER['HTTP_HOST'];
+    return protocol() . $domain;
+}
+
+
+function asset($path)
+{
+    $domain = trim(CURRENT_DOMAIN, '/');
+    $path = $domain . '/' . trim($path, '/');
+    return $path;
+
+}
+
+function url($path)
+{
+    $domain = trim(CURRENT_DOMAIN, '/');
+    $path = $domain . '/' . trim($path, '/');
+    return  $path;
+}
+
+function currentUrl()
+{
+    return currentDomain() . $_SERVER['REQUEST_URI'];
+}
+
+echo currentUrl();
