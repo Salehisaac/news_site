@@ -47,4 +47,3 @@ function currentUrl()
     return currentDomain() . $_SERVER['REQUEST_URI'];
 }
 
-echo currentUrl();
