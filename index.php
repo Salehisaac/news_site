@@ -47,3 +47,8 @@ function currentUrl()
     return currentDomain() . $_SERVER['REQUEST_URI'];
 }
 
+function redirect($path)
+{
+    header('Location: ' . url($path));
+    exit;
+}
