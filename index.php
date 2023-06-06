@@ -12,7 +12,53 @@ define('DB_NAME', 'project');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 
+//require_once 'database/DataBase.php';
+//$db = new DataBase\DataBase();
+
 //helpers
+
+ function uri($resevedUrl,$class,$method,$requestMethod = 'GET')
+{
+    //current url array
+    $currentUrl = explode('?', currentUrl()) [0];
+    $currentUrl = str_replace(CURRENT_DOMAIN, '', $currentUrl);
+    $currentUrl = trim($currentUrl, '/');
+    $currentUrlArray = explode('/', $currentUrl);
+    $currentUrlArray = array_filter($currentUrlArray);
+
+    //reseved url array
+    $resevedUrl = trim($resevedUrl, '/');
+    $resevedUrlArray = explode('/', $resevedUrl);
+    $resevedUrlArray = array_filter($resevedUrlArray);
+
+    if(sizeof($currentUrlArray) != sizeof($resevedUrlArray) || methodField() != $requestMethod) {
+        return false;
+    }
+
+    $parameters = [];
+    for($key = 0; $key < sizeof($resevedUrlArray); $key++) {
+        if($resevedUrlArray[$key][0] == '{' && $resevedUrlArray[$key][strlen($resevedUrlArray[$key]) - 1] == '}') {
+          array_push($parameters, $currentUrlArray[$key]);
+        }
+        else if($resevedUrlArray[$key] !== $currentUrlArray[$key]) {
+            return false;
+        }
+    }
+
+    if(methodField() == 'POST')
+    {
+        $request = isset($_FILES) ? array_merge($_POST, $_FILES) : $_POST;
+        $parameters = array_merge([$request], $parameters);
+    }
+
+    $object = new $class;
+    call_user_func_array([$object, $method], $parameters);
+    exit();
+
+
+
+}
+uri('home','HomeController','index');
 
 function protocol()
 {
@@ -52,3 +98,57 @@ function redirect($path)
     header('Location: ' . url($path));
     exit;
 }
+
+function methodField()
+{
+    return $_SERVER['REQUEST_METHOD'];
+}
+
+function displayError($displayError)
+{
+    if ($displayError) {
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+    }
+    else {
+        ini_set('display_errors', 0);
+        ini_set('display_startup_errors', 0);
+        error_reporting(0);
+    }
+}
+
+displayError(DISPLAY_ERROR);
+
+global $flashMessage;
+if(isset($_SESSION['flashMessage'])) {
+    $flashMessage = $_SESSION['flashMessage'];
+    unset($_SESSION['flashMessage']);
+}
+
+function flash($key, $value = null)
+{
+    if ($value === null) {
+        global $flashMessage;
+        $message = isset($flashMessage[$key]) ? $flashMessage[$key] : null;
+        return $message;
+    }
+    else {
+        $_SESSION['flashMessage'][$key] = $value;
+    }
+}
+
+function dd($data)
+{
+    echo '<pre>';
+    var_dump($data);
+    echo '</pre>';
+    die;
+}
+
+
+
+
+
+
+
