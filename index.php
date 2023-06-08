@@ -12,8 +12,13 @@ define('DB_NAME', 'project');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 
-//require_once 'database/DataBase.php';
-//$db = new DataBase\DataBase();
+require_once 'database/DataBase.php';
+require_once 'database/CreateDB.php';
+require_once 'activities/Admin/Category.php';
+/*$db1 = new database\Database();*/
+/*$db = new database\CreateDB();*/
+/*exit();*/
+
 
 //helpers
 
@@ -36,7 +41,8 @@ define('DB_PASSWORD', '');
     }
 
     $parameters = [];
-    for($key = 0; $key < sizeof($resevedUrlArray); $key++) {
+    for($key = 0; $key < sizeof($resevedUrlArray); $key++)
+    {
         if($resevedUrlArray[$key][0] == '{' && $resevedUrlArray[$key][strlen($resevedUrlArray[$key]) - 1] == '}') {
           array_push($parameters, $currentUrlArray[$key]);
         }
@@ -51,14 +57,14 @@ define('DB_PASSWORD', '');
         $parameters = array_merge([$request], $parameters);
     }
 
-    $object = new $class;
+    $object = $class;
     call_user_func_array([$object, $method], $parameters);
     exit();
 
 
 
 }
-uri('home','HomeController','index');
+/*uri('home','HomeController','index');*/
 
 function protocol()
 {
@@ -145,6 +151,9 @@ function dd($data)
     echo '</pre>';
     die;
 }
+
+uri('admin/category','Admin\Catagory','index');
+echo '404 not found';
 
 
 
