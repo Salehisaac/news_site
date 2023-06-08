@@ -12,6 +12,8 @@ define('DB_NAME', 'project');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 
+
+
 require_once 'database/DataBase.php';
 require_once 'database/CreateDB.php';
 require_once 'activities/Admin/Category.php';
@@ -57,7 +59,7 @@ require_once 'activities/Admin/Category.php';
         $parameters = array_merge([$request], $parameters);
     }
 
-    $object = $class;
+    $object = new $class;
     call_user_func_array([$object, $method], $parameters);
     exit();
 
@@ -152,7 +154,13 @@ function dd($data)
     die;
 }
 
-uri('admin/category','Admin\Catagory','index');
+uri('admin/category','Admin\Category','index');
+uri('admin/category/create','Admin\Category','create');
+uri('admin/category/store','Admin\Category','store','POST');
+uri('admin/category/edit','Admin\Category','edit');
+uri('admin/category/update','Admin\Category','update','POST');
+uri('admin/category/delete','Admin\Category','delete');
+
 echo '404 not found';
 
 
