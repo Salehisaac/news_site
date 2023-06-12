@@ -5,20 +5,21 @@ namespace Admin;
 
 use database\Database;
 
-class Category extends Admin
+class Post extends Admin
 {
 
     public function index()
     {
         $db = new DataBase();
-        $categories = $db->select('SELECT * FROM categories ORDER BY `id` DESC');
-        require_once(BASE_PATH . '/template/admin/categories/index.php');
+        $posts = $db->select('SELECT * FROM posts ORDER BY `id` DESC');
+        require_once(BASE_PATH . '/template/admin/posts/index.php');
     }
 
     public function create()
     {
-
-        require_once(BASE_PATH . '/template/admin/categories/create.php');
+        $db = new DataBase();
+        $categories = $db->select('SELECT * FROM categories');
+        require_once(BASE_PATH . '/template/admin/posts/create.php');
 
     }
 
@@ -49,6 +50,20 @@ class Category extends Admin
         $db = new DataBase();
         $db->delete('categories',$id);
         $this->redirect('admin/category');
+    }
+
+    public static function show_category_name($id)
+    {
+        $db = new DataBase();
+        $category = $db->select('SELECT * FROM categories WHERE id = ?;', [$id])->fetch();
+        return $category['name'];
+    }
+    public static function show_user_name($id)
+    {
+        $db = new DataBase();
+        $user = $db->select('SELECT * FROM users WHERE id = ?;', [$id])->fetch();
+        return $user['username'];
+
     }
 
 }
