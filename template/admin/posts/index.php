@@ -40,7 +40,7 @@ require_once(BASE_PATH . '/template/admin/layouts/header.php');
                     <?= $post['title'] ?>
                 </td>
                 <td>
-                   <?= $post['summary'] ?>
+                    <?= substr($post['summary'], 0,30) . ' .....'?>
                 </td>
                 <td>
                     <?= $post['view'] ?>
@@ -51,22 +51,23 @@ require_once(BASE_PATH . '/template/admin/layouts/header.php');
 
                 </td>
                 <td>
-                    <?= \Admin\Post::show_user_name($post['user_id'])?>
+                    <?= \Admin\Post::show_user_email($post['user_id'])?>
                 </td>
                 <td>
                     <?= \Admin\Post::show_category_name($post['cat_id'])?>
                 </td>
-                <td><img style="width: 80px;" src="" alt=""></td>
+                <td><img style="width: 80px;" src="<?=asset($post['image'])?>" alt=""></td>
                 <td style="width: 25rem;">
-                    <a role="button" class="btn btn-sm btn-warning btn-dark text-white" href="">
-                        <?= $post['breaking_news'] == 1 ? 'remove breaking news' : 'add breaking news' ?>
-                    </a>
-                    <a role="button" class="btn btn-sm btn-warning btn-dark text-white" href="">
+                    <a role="button" class="btn btn-sm btn-warning btn-dark text-white" href="<?=url('admin/post/selected/' . $post['id'])?>">
                         <?= $post['selected'] == 1 ? 'remove selected news' : 'add selected news' ?>
                     </a>
+                    <a role="button" class="btn btn-sm btn-warning btn-dark text-white" href="<?=url('admin/post/breakingNews/' . $post['id'])?>">
+                        <?= $post['breaking_news'] == 1 ? 'remove breaking news' : 'add breaking news' ?>
+                    </a>
+
                     <hr class="my-1" />
-                    <a role="button" class="btn btn-sm btn-primary text-white" href="">edit</a>
-                    <a role="button" class="btn btn-sm btn-danger text-white" href="">delete</a>
+                    <a role="button" class="btn btn-sm btn-primary text-white" href="<?=url('admin/post/edit/' . $post['id'])?>">edit</a>
+                    <a role="button" class="btn btn-sm btn-danger text-white" href="<?=url('admin/post/delete/' . $post['id'])?>">delete</a>
                 </td>
             </tr>
             <?php } ?>

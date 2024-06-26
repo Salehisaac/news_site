@@ -10,9 +10,10 @@
 <script src="<?= asset('public/ckeditor/ckeditor.js') ?>"></script>
 <script src="<?= asset('public/jalalidatepicker/persian-datepicker.min.js') ?>"></script>
 <script src="<?= asset('public/jalalidatepicker/persian-date.min.js') ?>"></script>
+<script src="<?= asset('public/jalalidatepicker/jalalidatepicker.js') ?>"></script>
 
 <script>
-    $(document).ready(function() {
+     $(document).ready(function() {
         CKEDITOR.replace('summary');
         CKEDITOR.replace('body');
 
@@ -24,12 +25,25 @@
                     enabled: true
                 }
             },
+            timePicker: {
+                enabled: true,
+            },
             observer: true,
             altField: '#published_at',
 
+
+
         });
 
-        })
+
+
+
+
+
+
+
+        });
+
 
 
 
